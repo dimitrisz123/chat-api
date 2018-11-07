@@ -1,6 +1,6 @@
-const instanceLocator = INSTANCE_LOCATOR;
+const instanceLocator = process.env.INSTANCE_LOCATOR;
 
-const key = CHAT_KEY;
+const key = process.env.CHAT_KEY;
 
 module.exports = {
 	instanceLocator,
