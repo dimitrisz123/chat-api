@@ -14,9 +14,8 @@ const chatkit = new Chatkit.default({
 });
 
 app.get("/", (req, res) => {
-	res.json('works')
-}
-
+	res.json("works");
+});
 
 app.post("/create_user", (req, res) => {
 	chatkit
