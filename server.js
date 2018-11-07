@@ -13,6 +13,11 @@ const chatkit = new Chatkit.default({
 	key: key
 });
 
+app.get("/", (req, res) => {
+	res.json('works')
+}
+
+
 app.post("/create_user", (req, res) => {
 	chatkit
 		.createUser({
