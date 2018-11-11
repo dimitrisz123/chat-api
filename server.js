@@ -33,7 +33,7 @@ app.post("/create_user", (req, res) => {
 
 app.post("/auth", (req, res) => {
 	const authData = chatkit.authenticate({
-		userId: req.body.id
+		userId: req.query.user_id
 	});
 
 	res.status(authData.status).send(authData.body);
