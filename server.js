@@ -1,8 +1,18 @@
 const Chatkit = require("@pusher/chatkit-server");
 const express = require("express");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 const { instanceLocator, key } = require("./variables.js");
-var cors = require("cors");
+const cors = require("cors");
+const knex = require("knex")({
+	client: "pg",
+	connection: {
+		host: "projects.ck2bg5isdvul.eu-central-1.rds.amazonaws.com",
+		user: "dimitrisz123",
+		password: "2690674z",
+		database: "chat"
+	}
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,37 +27,58 @@ app.get("/", (req, res) => {
 	res.send("works");
 });
 
-app.post("/create_user", (req, res) => {
-	chatkit
-		.createUser({
-			id: req.body.id,
-			name: req.body.name
-		})
-		.then(response => {
-			res.json(response);
-		})
-		.catch(err => {
-			res.status(400).json("ERROR CREATING USER");
-		});
+app.post("/register", (req, res) => {
+	bcrypt.hash(req.body.pass, 10, (err, hash) => {
+		knex("users")
+			.insert({ userid: req.body.userid, hash: hash })
+			.returning("userid")
+			.then(user =>
+				chatkit
+					.createUser({
+						id: user[0],
+						name: user[0]
+					})
+					.then(response => {
+						res.json(response);
+					})
+					.catch(err => {
+						res.status(400).json(
+							"Error registering user to the chat"
+						);
+					})
+			)
+			.catch(err =>
+				res.json("Error registering to the database").status(400)
+			);
+	});
+});
+
+app.post("/login", (req, res) => {
+	knex("users")
+		.where({ userid: req.body.userid })
+		.then(response =>
+			bcrypt.compare(req.body.pass, response[0].hash, (err, data) => {
+				if (data) {
+					chatkit
+						.getUser({
+							id: response[0].userid
+						})
+						.then(user => res.json(user))
+						.catch(err => res.status(400).json("User not found"));
+				} else {
+					res.json("Wrong password");
+				}
+			})
+		)
+		.catch(err => res.json("User does not exist"));
 });
 
 app.post("/auth", (req, res) => {
 	const authData = chatkit.authenticate({
 		userId: req.query.user_id
 	});
-
 	res.status(authData.status).send(authData.body);
 });
 
-app.post("/user", (req, res) => {
-	chatkit
-		.getUser({
-			id: req.body.id
-		})
-		.then(user => res.json(user))
-		.catch(err => res.status(400).json("USER NOT FOUND"));
-});
-
-app.listen(process.env.PORT || 3000, () =>
-	console.log(`App is running on port ${process.env.PORT}`)
-);
+PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
