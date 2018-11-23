@@ -8,8 +8,8 @@ const knex = require("knex")({
 	client: "pg",
 	connection: {
 		host: "projects.ck2bg5isdvul.eu-central-1.rds.amazonaws.com",
-		user: "dimitrisz123",
-		password: "2690674z",
+		user: "",
+		password: "",
 		database: "chat"
 	}
 });
