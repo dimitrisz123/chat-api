@@ -8,7 +8,7 @@ const knex = require("knex")({
 	client: "pg"
 	connection: {
 		host: process.env.DATABASE_URL,
-	    ssl: true,
+	    ssl: true
 	}
 });
 
@@ -78,5 +78,5 @@ app.post("/auth", (req, res) => {
 	res.status(authData.status).send(authData.body);
 });
 
-PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
+// PORT = process.env.PORT || 3000;
+app.listen(process.env.PORT, () => console.log(`App is running on port ${PORT}`));
