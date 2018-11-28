@@ -43,7 +43,7 @@ app.post("/register", (req, res) => {
 					})
 					.catch(err => {
 						res.status(400).json(
-							"Error registering user to the chat"
+							"Error registering user to the cht"
 						);
 					})
 			)
