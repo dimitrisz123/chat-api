@@ -2,9 +2,6 @@
 	"name": "chat-api",
 	"version": "1.0.0",
 	"description": "",
-	"engines": {
-		"node": "8.12.0"
-	},
 	"main": "server.js",
 	"scripts": {
 		"start": "nodemon server.js"
