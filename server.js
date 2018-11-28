@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const { instanceLocator, key } = require("./variables/variables.js");
 const cors = require("cors");
 const knex = require("knex")({
-	client: "pg"
+	client: "pg",
 	connection: {
 		connectionString: process.env.DATABASE_URL,
 		ssl: true
@@ -78,5 +78,5 @@ app.post("/auth", (req, res) => {
 	res.status(authData.status).send(authData.body);
 });
 
-PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
