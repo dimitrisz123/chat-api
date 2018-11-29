@@ -14,6 +14,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@pusher/chatkit-server": "^1.0.4",
+		"bcrypt": "^3.0.2",
 		"body-parser": "^1.18.3",
 		"cors": "^2.8.5",
 		"express": "^4.16.4",
@@ -21,7 +22,6 @@
 		"pg": "^7.6.1"
 	},
 	"devDependencies": {
-		"bcrypt": "^3.0.0",
 		"nodemon": "^1.18.7"
 	}
 }
