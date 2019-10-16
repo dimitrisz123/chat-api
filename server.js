@@ -1,7 +1,9 @@
 const Chatkit = require("@pusher/chatkit-server");
 const express = require("express");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { instanceLocator, key } = require("./variables/variables.js");
 const cors = require("cors");
 const knex = require("knex")({
@@ -78,5 +80,17 @@ app.post("/auth", (req, res) => {
 	res.status(authData.status).send(authData.body);
 });
 
-const PORT = process.env.PORT || 3000;
+app.post("/user_id_from_JWT", (req, res) => {
+	const decoded = jwt.decode(req.headers.authorization);
+	chatkit
+		.getUser({
+			id: decoded.sub
+		})
+		.then(user => {
+			res.json(user);
+		})
+		.catch(err => res.status(400).json("User not found"));
+});
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
